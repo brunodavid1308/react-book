@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './App.css';
 
 const DEFAULT_HPP = '100';
 
-const PATH_BASE = 'https://hn.algolia.com/api/v1';
+const PATH_BASE = 'https://hn.algolia.com/api/v1';;
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
 const PARAM_HPP = 'hitsPerPage='; 
 
 class App extends Component {
+  _isMounted = false;
 
   constructor(props) {
     super(props);
@@ -18,6 +20,7 @@ class App extends Component {
       searchTerm: '',
       results:null,
       searchKey:'',
+      error: null,
     };
     this.onDismiss = this.onDismiss.bind(this); // Se puede omitir si se utilizan las arrow functions
     this.onSearchChange = this.onSearchChange.bind(this);
@@ -47,10 +50,9 @@ class App extends Component {
   }
 
   fetchSearchTopStories (searchTerm,page=0){
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
-      .then(response => response.json())
-      .then(result => this.setSearchTopStories(result))
-      .catch(error => error);
+    axios(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
+      .then(result => this._isMounted && this.setSearchTopStories(result.data))
+      .catch(error => this._isMounted && this.setState({error:error}));
   }
   OnSearchSubmit (event){
     const { searchTerm } = this.state;
@@ -63,10 +65,16 @@ class App extends Component {
   }
 
   componentDidMount () {
+    this._isMounted = true;
+
     const {searchTerm} = this.state;
     this.setState({ searchKey: searchTerm});
     this.fetchSearchTopStories(searchTerm);
   }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+  
   
   onDismiss(id){
     const { searchKey, results } = this.state;
@@ -87,9 +95,10 @@ class App extends Component {
   }
 
   render() {
-    const {searchTerm,results,searchKey}=this.state;
+    const {searchTerm,results,searchKey,error}=this.state;
     const page = (results && results[searchKey] && results[searchKey].page) || 0;
     const list = (results && results[searchKey] && results[searchKey].hits) || [];
+
     return (
       <div className="page">
         <div className="interactions">
@@ -101,13 +110,18 @@ class App extends Component {
             Buscar
           </Search>
         </div>
-        <Table 
-          list={list}
-          onDismiss={this.onDismiss}
-        />
+        { error
+          ? <div className="interactions">
+            <p>Algo ha fallado</p>
+          </div>
+          : <Table 
+            list={list}
+            onDismiss={this.onDismiss}
+          />
+        }
         <div className="interactions">
           <Button onClick ={() => this.fetchSearchTopStories(searchKey, page + 1)}>
-            Ver Más
+            uMás
           </Button>
         </div>
     </div>
@@ -160,3 +174,5 @@ const Button = ({ onClick, className = '', children }) =>
   </button>
 
 export default App;
+
+export {Button,Search,Table};
