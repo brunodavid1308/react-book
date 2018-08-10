@@ -47,7 +47,7 @@ describe('Button', () => {
 
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<Button>Más</Button>, div);
+    ReactDOM.render(<Button >Más</Button>, div);
     ReactDOM.unmountComponentAtNode(div);
   });
 
@@ -60,13 +60,13 @@ describe('Button', () => {
 
   });
 
-  /* it('muestra dos items en la lista', () => {
-    const handleClick = sinon.spy();
-    const element = shallow(
-      <Button>Buscar</Button>
+  it('coincidencia tipo y valor classname', () => {
+    const component = shallow(
+      <Button className="ola">Más</Button>
     );
-    expect(element.find('.table-row').length).toBe(2);
-  }); */
+    expect(typeof(component.props().className)).toBe('string');
+    expect(component.props().children).toEqual('Más');
+  });
 
 });
 
@@ -77,6 +77,8 @@ describe('Table', () => {
       { tittle:'1', author:'1',num_comments:1, points:2,objectID:'y' },
       { tittle:'2', author:'2',num_comments:1, points:2,objectID:'z' },
     ],
+    sortKey:'TITLE',
+    isSortReverse: false,
   };
 
   it('renders without crashing', () => {
