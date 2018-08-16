@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { sortBy } from 'lodash';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 import './App.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -223,7 +223,7 @@ class Table extends Component {
                 sortKey={'TITLE'}
                 onSort={this.onSort}
                 activeSortKey={sortKey}
-                isSortReverse={isSortReverse}
+  
               >
                 Title
               </Sort>
@@ -233,7 +233,7 @@ class Table extends Component {
                 sortKey={'AUTHOR'}
                 onSort={this.onSort}
                 activeSortKey={sortKey}
-                isSortReverse={isSortReverse}
+  
               >
                 Author
               </Sort>
@@ -243,7 +243,7 @@ class Table extends Component {
                 sortKey={'COMMENTS'}
                 onSort={this.onSort}
                 activeSortKey={sortKey}
-                isSortReverse={isSortReverse}
+  
               >
                 Comments
               </Sort>
@@ -253,7 +253,7 @@ class Table extends Component {
                 sortKey={'POINTS'}
                 onSort={this.onSort}
                 activeSortKey={sortKey}
-                isSortReverse={isSortReverse}
+  
               >
                 Points
               </Sort>
@@ -270,12 +270,10 @@ class Table extends Component {
               <span style={{width:'20%'}}> {item.author}</span>
               <span style={{width:'15%'}}> {item.num_comments}</span>
               <span style={{width:'10%'}}> {item.points}</span>
-              <span style={{width:'10%'}}> sortKey={sortKey}
-            onSort={this.onSort}
-            isSortReverse={isSortReverse}
+              <span style={{width:'10%'}}> 
                 <Button 
-                onClick = {() => onDismiss(item.objectID)}
-                className="button-inline"
+                  onClick = {() => onDismiss(item.objectID)}
+                  className="button-inline"
                 >
                   Ocultar
                 </Button>
