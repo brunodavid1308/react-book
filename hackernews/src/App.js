@@ -283,8 +283,7 @@ class Table extends Component {
         </div>
     
       );
-  }
-    
+  }  
 } 
 
 const Button = ({ onClick, className = '', children }) =>
