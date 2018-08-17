@@ -119,6 +119,7 @@ class App extends Component {
 
     return (
       <div className="page">
+        <h1 style={{ textAlign : 'center' }}>MUNDO HACKER</h1>
         <div className="interactions">
           <Search 
             value ={searchTerm}
